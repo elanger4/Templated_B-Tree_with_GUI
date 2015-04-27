@@ -4,7 +4,7 @@
 #include <iostream>
 #include "node.h"
 
-template <class T>
+template <typename T>
 class btree {
     public:
         btree();
@@ -13,6 +13,9 @@ class btree {
         node<T>* search(T value);
 
     private:
+		void insert(T value, node<T> *nd);
+		node<T>* search(T value, node<T> *nd);
+
         node<T> *root;
         int degree;
 };

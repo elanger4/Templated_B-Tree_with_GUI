@@ -1,0 +1,20 @@
+#include "btree.h"
+
+template <typename T>
+btree::btree()
+{
+
+}
+
+template <typename T>
+void btree::insert(T value)
+{
+
+}
+
+template <typename T>
+void btree::insert(T value, node *nd)
+{
+
+}
+
