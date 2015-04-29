@@ -10,6 +10,9 @@ btree<T>::btree(int d) {
 
 template<typename T>
 btree<T>::~btree() {
+	// I dont think this will do it.
+	// The root will be gone, but all the other nodes will still me in memory
+	// I think we might have to do something like cleanBst();
     delete root; //temp
 }
 
