@@ -2,5 +2,6 @@
 #include <iostream>
 
 int main() {
+    btree<int> b(5);
     
 }

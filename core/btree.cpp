@@ -1,47 +1,57 @@
 #include "btree.h"
 
 template <typename T>
-btree::btree() {
+btree<T>::btree(int d) {
+    degree = d;
+    root = new node<T>();
+    root->leaf = true;
+    std::cout << root->leaf;
+}
+
+template<typename T>
+btree<T>::~btree() {
+    delete root; //temp
+}
+
+template <typename T>
+void btree<T>::insert(T value) {
+    insert(value, root);
+}
+
+/*
+template <typename T>
+void btree<T>::insert(T value, node<T> *nd) {
+    
+}
+
+template <typename T>
+node<T>* btree<T>::search(T value) {
 
 }
 
 template <typename T>
-void btree::insert(T value) {
+node<T>* btree<T>::search(T value, node<T> *nd) {
 
 }
 
 template <typename T>
-void btree::insert(T value, node<T> *nd) {
+void btree<T>::printInOrder() {
 
 }
 
 template <typename T>
-node<T>* btree::search(T value) {
+void btree<T>::printInOrder(node<T> *nd) {
 
 }
 
 template <typename T>
-node<T>* btree::search(T value, node<T> *nd) {
+void btree<T>::readFile() {
 
 }
 
 template <typename T>
-void btree:printInOrder() {
+void btree<T>::writeFile() {
 
 }
 
-template <typename T>
-void btree:printInOrder(node<T> *nd) {
-
-}
-
-template <typename T>
-void btree::readFile() {
-
-}
-
-template <typename T>
-void btree::writeFile() {
-
-}
-
+*/

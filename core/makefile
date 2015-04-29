@@ -6,7 +6,7 @@ all:main
 main: main.o
 	$(COMPILER) $(FLAGS) main.o -o main
 
-main.o: main.cpp btree.h
+main.o: main.cpp btree.h node.h
 	$(COMPILER) $(FLAGS) -c main.cpp
 
 clean:
