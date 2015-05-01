@@ -49,12 +49,21 @@ node<T>* btree<T>::search(T value) {
 
    template <typename T>
    void btree<T>::printInOrder() {
+		if (root == nullptr)
+			return;
 
+		inOrder(root);
    }
 
    template <typename T>
    void btree<T>::printInOrder(node<T> *nd) {
-
+		for (int i = 0; i < degree; i++) {
+			if (children[i] != nullptr) {
+				inOrder(children[i];
+			} else {
+				cout << keys[i];
+			}
+		}
    }
 
    template <typename T>
