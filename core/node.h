@@ -7,9 +7,8 @@
 template <typename T>
 class node {
     public:
-        node();
-        ~node();
-
+  node(){};
+        ~node(){};
         std::vector< node<T>* > children;
         std::vector< T* > keys;
         bool leaf;
