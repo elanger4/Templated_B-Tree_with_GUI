@@ -14,8 +14,10 @@ class btree {
         void printInOrder();
         void readFile();
         void writeFile();
+		void btreeClean();
 
     private:
+		void btreeClean(node<T> *nd);
         void insert(T value, node<T> *nd);
         node<T>* search(T value, node<T> *nd);
         void printInOrder(node<T> *nd);

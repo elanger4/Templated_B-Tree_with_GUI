@@ -13,7 +13,8 @@ btree<T>::~btree() {
     // I dont think this will do it.
     // The root will be gone, but all he other nodes will still me in memory
     // I think we might have to do something like cleanBst();
-    delete root; //temp
+		btreeClean(root);
+//    delete root; //temp
 }
 
 template <typename T>
@@ -44,14 +45,14 @@ node<T>* btree<T>::search(T value) {
 /*
    template <typename T>
    node<T>* btree<T>::search(T value, node<T> *nd) {
-		for (int i = 0; i < keys.size(); i++) {
-			if (value === keys[i]) {
-				return node;
-			} else if (value < keys[i]) {
-				search(value, keys[i]);
+		for (int i = 0; i < nd.keys.size(); i++) {
+			if (value === nd.keys[i]) {
+				return nd;
+			} else if (value < nd.keys[i]) {
+				search(value, nd.keys[i]);
 				break;
-			} else if (val > keys.size()-1) {
-				search(children[children.size()-1], value)
+			} else if (val > nd.keys.size()-1) {
+				search(nd.children[nd.children.size()-1], value)
 				break;
 			}
 		}
@@ -67,12 +68,12 @@ node<T>* btree<T>::search(T value) {
 
    template <typename T>
    void btree<T>::printInOrder(node<T> *nd) {
-		for (int i = 0; i < children.size(); i++) {
-			if (children[i] != nullptr) {
-				inOrder(children[i];
+		for (int i = 0; i < nd.children.size(); i++) {
+			if (nd.children[i] != nullptr) {
+				inOrder(nd.children[i];
 			} else {
-				if (i < keys.size()) {
-					cout << keys[i];
+				if (i < nd.keys.size()) {
+					cout << nd.keys[i];
 				}
 			}
 		}
@@ -87,5 +88,22 @@ node<T>* btree<T>::search(T value) {
    void btree<T>::writeFile() {
 
    }
+
+void btree<T>::btreeClean() {
+	if (root == nullptr) {
+		return;
+	}
+	btreeClean(root);
+	root = nullptr;
+}
+
+void btree<T>::btreeClean(node<T> *nd) {
+	if (nd == nullptr)
+		return;
+	for (int i = 0; i < nd.children.size(); i++) {
+		btreeClean(nd.children[i];
+	}
+	 delete nd;
+}
 
 */
