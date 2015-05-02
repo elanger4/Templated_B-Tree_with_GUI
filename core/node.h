@@ -7,15 +7,18 @@
 template <typename T>
 class node {
     public:
-  node(){};
+        node(){};
         ~node(){};
+        void leafInsert(T value) {
+            int i = 0;
+            while (value > keys[i])
+                i++;
+            keys.insert(i, value);
+        }
         std::vector< node<T>* > children;
         std::vector< T* > keys;
         bool leaf;
-        //node<T> *children[];
-        //T *keys[];
 
-        //friend class btree;
 };
 
 #endif
