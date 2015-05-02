@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "node.h"
+#include <fstream>
 
 template <typename T>
 class btree {
@@ -12,7 +13,7 @@ class btree {
         void insert(T value);
         node<T>* search(T value);
         void printInOrder();
-        void readFile();
+        std::vector<std::string> readFile();
         void writeFile();
 
     private:
