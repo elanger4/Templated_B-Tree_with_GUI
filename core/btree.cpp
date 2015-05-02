@@ -44,7 +44,17 @@ node<T>* btree<T>::search(T value) {
 /*
    template <typename T>
    node<T>* btree<T>::search(T value, node<T> *nd) {
-
+		for (int i = 0; i < keys.size(); i++) {
+			if (value === keys[i]) {
+				return node;
+			} else if (value < keys[i]) {
+				search(value, keys[i]);
+				break;
+			} else if (val > keys.size()-1) {
+				search(children[children.size()-1], value)
+				break;
+			}
+		}
    }
 
    template <typename T>

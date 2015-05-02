@@ -21,7 +21,7 @@ class btree {
         void printInOrder(node<T> *nd);
 
         node<T> *root;
-        int degree;
+        unsigned int degree;
 };
 
 #include "btree.cpp"
