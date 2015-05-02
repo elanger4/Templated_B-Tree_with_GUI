@@ -62,15 +62,44 @@ node<T>* btree<T>::search(T value) {
     */
 }
 
-template <typename T>
-node<T>* btree<T>::search(T value, node<T> *nd) {
 
-}
+/*
+   template <typename T>
+   node<T>* btree<T>::search(T value, node<T> *nd) {
+		for (int i = 0; i < keys.size(); i++) {
+			if (value === keys[i]) {
+				return node;
+			} else if (value < keys[i]) {
+				search(value, keys[i]);
+				break;
+			} else if (val > keys.size()-1) {
+				search(children[children.size()-1], value)
+				break;
+			}
+		}
+   }
 
-template <typename T>
-void btree<T>::printInOrder() {
+   template <typename T>
+   void btree<T>::printInOrder() {
+		if (root == nullptr)
+			return;
 
-}
+		inOrder(root);
+   }
+
+   template <typename T>
+   void btree<T>::printInOrder(node<T> *nd) {
+		for (int i = 0; i < children.size(); i++) {
+			if (children[i] != nullptr) {
+				inOrder(children[i];
+			} else {
+				if (i < keys.size()) {
+					cout << keys[i];
+				}
+			}
+		}
+   }
+   */
 
 template <typename T>
 void btree<T>::printInOrder(node<T> *nd) {
