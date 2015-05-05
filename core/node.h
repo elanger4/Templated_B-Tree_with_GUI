@@ -8,11 +8,12 @@ class node {
     public:
         node(){};
         ~node(){};
-        void leafInsert(T value) {
+        int leafInsert(T value) {
             int i = 0;
             while (value > keys[i])
                 i++;
             keys.insert(i, value);
+			return i;
         }
         std::vector< node<T>* > children;
         std::vector< T* > keys;
