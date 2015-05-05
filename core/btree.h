@@ -18,6 +18,7 @@ class btree {
 		void btreeClean();
 
     private:
+		void rotate(node<T> *nd);
 		void btreeClean(node<T> *nd);
         void insert(T value, node<T> *nd);
         node<T>* search(T value, node<T> *nd);

@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-
 template <typename T>
 class node {
     public:
@@ -17,6 +16,7 @@ class node {
         }
         std::vector< node<T>* > children;
         std::vector< T* > keys;
+		node<T> *parent;
         bool leaf;
 
 };

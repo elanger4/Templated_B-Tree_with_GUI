@@ -10,7 +10,7 @@ btree<T>::btree(int d) {
 
 template<typename T>
 btree<T>::~btree() {
-		btreeClean(root);
+	btreeClean(root);
 }
 
 /*
@@ -24,9 +24,9 @@ void btree<T>::insert(T value) {
     }
 } */
 
-// template <typename T>
-// void btree<T>::insert(T value) {  // k=value
-	
+template <typename T>
+void btree<T>::insert(T value, node<T> *nd) {  // k=value
+
     // node<T> *x = root;
     // while (!x->leaf) {
         // int i = 0;
@@ -44,8 +44,48 @@ void btree<T>::insert(T value) {
     //}
     //x is now a leaf. 
     //insert k into x basic
-	
+	if (!(nd->leaf)) {
+		for (unsigned long i = 0; i < nd->keys.size(); i++) {
+			if (value <= nd->keys[i]) {
+				insert(value, nd->keys[i]);
+				break;
+			} else if (value > nd->keys.size()-1) {
+				insert(nd->children[nd->children.size()-1], value);
+				break;
+			}
+		}
+	} else {
+		nd->leafInsert(value);
+	}
+}
 
+template <typename T>
+void btree<T>::rotate(node<T> *nd) {
+//	now we have to rotate
+	if (nd->keys.size() ==  degree) {
+		//splits the node
+		int mid = degree / 2;
+		node<T> *frontHalf = new node<T>();
+		node<T> *backHalf = new node<T>();
+
+		frontHalf->parent = nd;
+		backHalf->parent = nd;
+
+		for (int i =0; i < nd->keys.size(); i++) {
+			if (i == mid) {
+				continue;
+			} else if (i < mid) {
+				frontHalf->keys.pushBack(nd->keys[i]);	
+				nd->keys.erase(i);
+			} else {
+				backHalf->keys.pushBack(nd->keys[i]);	
+				nd->keys.erase(i);
+			}
+		}
+	}
+}
+
+	
 //}
 
 
@@ -61,20 +101,20 @@ node<T>* btree<T>::search(T value) {
 
 
 
-   template <typename T>
-   node<T>* btree<T>::search(T value, node<T> *nd) {
-		for (unsigned long i = 0; i < nd->keys.size(); i++) {
-			if (value == nd->keys[i]) {
-				return nd;
-			} else if (value < nd->keys[i]) {
-				search(value, nd->keys[i]);
-				break;
-			} else if (value > nd->keys.size()-1) {
-				search(nd->children[nd->children.size()-1], value);
-				break;
-			}
+template <typename T>
+node<T>* btree<T>::search(T value, node<T> *nd) {
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+		if (value == nd->keys[i]) {
+			return nd;
+		} else if (value < nd->keys[i]) {
+			search(value, nd->keys[i]);
+			break;
+		} else if (value > nd->keys.size()-1) {
+			search(nd->children[nd->children.size()-1], value);
+			break;
 		}
-   }
+	}
+}
 
 
 template <typename T>
