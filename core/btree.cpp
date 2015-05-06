@@ -96,10 +96,11 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			//sets the pointers the parent node
 			nd->parent->children[pos] = frontHalf;
 			nd->parent->children[pos+1] = backHalf;
+			nd->parent->leafInsert(mid);
 
 			rotate(nd->parent);
-			//do i need to delete it after Ive copied it?
-			//delete nd;
+
+			delete nd;
 
 		} 
 	}
