@@ -13,16 +13,16 @@ btree<T>::~btree() {
 	btreeClean(root);
 }
 
-/*
+
 template <typename T>
 void btree<T>::insert(T value) {
     if (root == nullptr) {
-        node<T>* newNode = new node<T>(value);
+        node<T>* newNode = new node<T>();
         root = newNode;
     } else {
         insert(value, root);
     }
-} */
+} 
 
 template <typename T>
 void btree<T>::insert(T value, node<T> *nd) {  // k=value
