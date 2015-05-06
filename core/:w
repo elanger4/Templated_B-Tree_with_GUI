@@ -4,8 +4,8 @@ template <typename T>
 btree<T>::btree(int d) {
     degree = d;
     root = new node<T>();
-    root->isLeaf = true;
-    std::cout << root->isLeaf;
+    root->leaf = true;
+    std::cout << root->leaf;
 }
 
 template<typename T>
@@ -44,7 +44,7 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
     //}
     //x is now a leaf. 
     //insert k into x basic
-	if (!(nd->isLeaf)) {
+	if (!(nd->leaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
 			if (value <= nd->keys[i]) {
 				insert(value, nd->children[i]);
@@ -107,20 +107,7 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			delete nd;
 		} 
 
-
-		frontHalf->isLeaf = true;
-		for (int i =0; i < frontHalf->children.size(); i++) {
-			if (frontHalf->children[i] != nullptr) {
-				frontHalf->isLeaf = false;
-			}
-		}
-
-		backHalf->isLeaf = true;
-		for (int i =0; i < backHalf->children.size(); i++) {
-			if (backHalf->children[i] != nullptr) {
-				backHalf->isLeaf = false;
-			}
-		}
+		for (int i =0; i < nd->keys.size(); i++) {
 	}
 }
 
