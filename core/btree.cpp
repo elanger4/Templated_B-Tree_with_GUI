@@ -112,6 +112,7 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			}
 		}
 
+		std::cout << "Running?\n";
 		// if its not at the root
 		nd->isLeaf = false;
 		if (nd->parent != nullptr) {
@@ -164,14 +165,18 @@ node<T>* btree<T>::search(T value, node<T> *nd) {
 	for (unsigned long i = 0; i < nd->keys.size(); i++) {
 		if (value == nd->keys[i]) {
 			return nd;
-		} else if (value < nd->keys[i]) {
-			search(value, nd->keys[i]);
-			break;
+		} 
+	}
+		
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+		if (value > nd->keys[i] && value < nd->keys[i+1]) {
+			search(value, nd->children[i+1]);
 		} else if (value > nd->keys.size()-1) {
-			search(nd->children[nd->children.size()-1], value);
+			search(value, nd->children[nd->children.size()-1]);
 			break;
 		}
 	}
+	return nullptr;
 }
 
 
@@ -186,10 +191,13 @@ void btree<T>::printInOrder() {
 template <typename T>
 void btree<T>::printInOrder(node<T> *nd) {
 
+	std::cout << "called printInOrder()  ";
 	//probably have to fix the bounds on this
-	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+	for (unsigned long i = 0; i < nd->children.size(); i++) {
 		if (nd->children[i] != nullptr) {
 			printInOrder(nd->children[i]);
+			std::cout << "child is: " << nd->children[i] << std::endl;
+			std::cout << nd->keys[i] << " ";
 		} else {
 			if (i < nd->keys.size()) {
 				std::cout << nd->keys[i] << " ";
