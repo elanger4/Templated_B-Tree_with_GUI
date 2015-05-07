@@ -23,23 +23,18 @@ void btree<T>::insert(T value) {
 template <typename T>
 void btree<T>::insert(T value, node<T> *nd) {  // k=value
 
-	std::cout << "working1\n";
 	//the node is not a leaf
 	if (!(nd->isLeaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
-			std::cout << "working2\n";
 			if (value <= nd->keys[i]) {
-			std::cout << "working3\n";
 				insert(value, nd->children[i]);
 				break;
 			} else if (value > nd->keys.size()-1) {
-			std::cout << "working3\n";
 				insert(value, nd->children[nd->children.size()-1]);
 				break;
 			}
 		}
 	} else {
-			std::cout << "working5\n";
 			nd->nodeInsert(value);
 		if (nd->keys.size() == degree) {
 			rotate(value, nd);
@@ -158,12 +153,8 @@ node<T>* btree<T>::search(T value, node<T> *nd) {
 
 template <typename T>
 void btree<T>::deleteValue(T value) {
-		std::cout << "delete running1";
 	node<T> *deleteNode = search(value);
-		std::cout << "delete running1";
 	if (deleteNode->isLeaf) {
-		std::cout << "delete running2";
-
 		for (unsigned long i =0; i < deleteNode->keys.size(); i++) {
 			if (value == deleteNode->keys[i]) {
 				deleteNode->keys.erase(deleteNode->keys.begin()+i);
