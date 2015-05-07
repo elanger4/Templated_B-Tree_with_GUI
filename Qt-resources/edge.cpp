@@ -50,7 +50,7 @@ static double TwoPi = 2.0 * Pi;
 
 //! [0]
 Edge::Edge(Node *sourceNode, Node *destNode)
-    : arrowSize(10)
+    : arrowSize(10) //CHANGE ARROW SIZE
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -76,6 +76,7 @@ Node *Edge::destNode() const
 //! [2]
 void Edge::adjust()
 {
+    //CHANGE WHERE ARROW LANDS ON NODE
     if (!source || !dest)
         return;
 
@@ -123,6 +124,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
 //! [5]
     // Draw the line itself
+    //CUSTOMIZE LOOK OF ARROW LINE
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 //! [5]
