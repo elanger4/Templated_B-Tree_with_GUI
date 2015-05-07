@@ -13,8 +13,15 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+        edge.cpp \
+        node.cpp \
+        graphwidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h\
+            edge.h \
+            node.h \
+            graphwidget.h
+
 
 FORMS    += mainwindow.ui

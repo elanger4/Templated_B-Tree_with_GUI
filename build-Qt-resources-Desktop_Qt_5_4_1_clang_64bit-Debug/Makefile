@@ -49,10 +49,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Qt-resources/main.cpp \
-		../Qt-resources/mainwindow.cpp moc_mainwindow.cpp
+		../Qt-resources/mainwindow.cpp \
+		../Qt-resources/edge.cpp \
+		../Qt-resources/node.cpp \
+		../Qt-resources/graphwidget.cpp moc_mainwindow.cpp \
+		moc_graphwidget.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		edge.o \
+		node.o \
+		graphwidget.o \
+		moc_mainwindow.o \
+		moc_graphwidget.o
 DIST          = /Applications/Qt/5.4/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/qdevice.pri \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/device_config.prf \
@@ -154,6 +162,7 @@ DIST          = /Applications/Qt/5.4/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/qt_config.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/spec_post.prf \
+		../Qt-resources/.qmake.stash \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/default_pre.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -174,8 +183,14 @@ DIST          = /Applications/Qt/5.4/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/exceptions.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/yacc.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/lex.prf \
-		../Qt-resources/Qt-resources.pro ../Qt-resources/mainwindow.h ../Qt-resources/main.cpp \
-		../Qt-resources/mainwindow.cpp
+		../Qt-resources/Qt-resources.pro ../Qt-resources/mainwindow.h \
+		../Qt-resources/edge.h \
+		../Qt-resources/node.h \
+		../Qt-resources/graphwidget.h ../Qt-resources/main.cpp \
+		../Qt-resources/mainwindow.cpp \
+		../Qt-resources/edge.cpp \
+		../Qt-resources/node.cpp \
+		../Qt-resources/graphwidget.cpp
 QMAKE_TARGET  = Qt-resources
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Qt-resources.app/Contents/MacOS/Qt-resources
@@ -318,6 +333,7 @@ Makefile: ../Qt-resources/Qt-resources.pro /Applications/Qt/5.4/clang_64/mkspecs
 		/Applications/Qt/5.4/clang_64/mkspecs/features/qt_config.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/default_pre.prf \
 		/Applications/Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -444,6 +460,7 @@ Makefile: ../Qt-resources/Qt-resources.pro /Applications/Qt/5.4/clang_64/mkspecs
 /Applications/Qt/5.4/clang_64/mkspecs/features/qt_config.prf:
 /Applications/Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf:
 /Applications/Qt/5.4/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /Applications/Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf:
 /Applications/Qt/5.4/clang_64/mkspecs/features/default_pre.prf:
 /Applications/Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -497,8 +514,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Qt-resources/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Qt-resources/main.cpp ../Qt-resources/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Qt-resources/mainwindow.h ../Qt-resources/edge.h ../Qt-resources/node.h ../Qt-resources/graphwidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Qt-resources/main.cpp ../Qt-resources/mainwindow.cpp ../Qt-resources/edge.cpp ../Qt-resources/node.cpp ../Qt-resources/graphwidget.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Qt-resources/mainwindow.ui $(DISTDIR)/
 
 
@@ -525,13 +542,36 @@ compiler_objective_c_make_all:
 compiler_objective_c_clean:
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_graphwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_graphwidget.cpp
 moc_mainwindow.cpp: /Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QMainWindow \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qmainwindow.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QVBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qboxlayout.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QHBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QWidget \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QTextEdit \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qtextedit.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QLabel \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlabel.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsScene \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsscene.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
+		../Qt-resources/graphwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QApplication \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qapplication.h \
 		../Qt-resources/mainwindow.h
 	/Applications/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Applications/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/jack/BTREE/Qt-resources -I/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Headers -I. -F/Applications/Qt/5.4/clang_64/lib ../Qt-resources/mainwindow.h -o moc_mainwindow.cpp
+
+moc_graphwidget.cpp: /Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../Qt-resources/graphwidget.h
+	/Applications/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Applications/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/jack/BTREE/Qt-resources -I/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Headers -I. -F/Applications/Qt/5.4/clang_64/lib ../Qt-resources/graphwidget.h -o moc_graphwidget.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -556,6 +596,22 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 main.o: ../Qt-resources/main.cpp ../Qt-resources/mainwindow.h \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QMainWindow \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qmainwindow.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QVBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qboxlayout.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QHBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QWidget \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QTextEdit \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qtextedit.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QLabel \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlabel.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsScene \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsscene.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
+		../Qt-resources/graphwidget.h \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QApplication \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Qt-resources/main.cpp
@@ -563,11 +619,74 @@ main.o: ../Qt-resources/main.cpp ../Qt-resources/mainwindow.h \
 mainwindow.o: ../Qt-resources/mainwindow.cpp ../Qt-resources/mainwindow.h \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QMainWindow \
 		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qmainwindow.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QVBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qboxlayout.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QHBoxLayout \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QWidget \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QTextEdit \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qtextedit.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QLabel \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlabel.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsScene \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsscene.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
+		../Qt-resources/graphwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QApplication \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qapplication.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Qt-resources/mainwindow.cpp
 
+edge.o: ../Qt-resources/edge.cpp ../Qt-resources/edge.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../Qt-resources/node.h \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/QPainter \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/qpainter.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o edge.o ../Qt-resources/edge.cpp
+
+node.o: ../Qt-resources/node.cpp ../Qt-resources/edge.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../Qt-resources/node.h \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
+		../Qt-resources/graphwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsScene \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsscene.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsSceneMouseEvent \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicssceneevent.h \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/QPainter \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/qpainter.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QStyleOption \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qstyleoption.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../Qt-resources/node.cpp
+
+graphwidget.o: ../Qt-resources/graphwidget.cpp ../Qt-resources/graphwidget.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../Qt-resources/edge.h \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsItem \
+		/Applications/Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsitem.h \
+		../Qt-resources/node.h \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QList \
+		/Applications/Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qlist.h \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/QKeyEvent \
+		/Applications/Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers/qevent.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o graphwidget.o ../Qt-resources/graphwidget.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_graphwidget.o: moc_graphwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_graphwidget.o moc_graphwidget.cpp
 
 ####### Install
 

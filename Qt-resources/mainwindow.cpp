@@ -17,20 +17,26 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton *button = new QPushButton();
     QTextEdit *edit = new QTextEdit();
 
+    GraphWidget *widget = new GraphWidget();
+
+
     //Sizing
     edit->setMaximumWidth(100);
-    edit->setMaximumHeight(25);
+    edit->setMaximumHeight(28);
     button->setMaximumWidth(65);
 
     //Setup
     gview->setScene(scene);
     scene->addText("Hello CS240!");
-    button->setText("&Add");
+    button->setText("Add");
     edit->setPlaceholderText("Value");
     //view->show();
 
+
     //Layout
-    hCore->addWidget(gview);
+    //hCore->addWidget(gview);
+    hCore->addWidget(widget);
+
     mainLayout->addLayout(hControls);
     mainLayout->addLayout(hCore);
     mainWidget->setLayout(mainLayout);
@@ -43,11 +49,4 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    /*delete mainWidget;
-    delete mainLayout;
-    delete hLayout;
-    delete scene;
-    delete view;
-    delete button;
-    delete edit;*/
 }

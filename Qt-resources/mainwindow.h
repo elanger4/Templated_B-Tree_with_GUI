@@ -11,6 +11,9 @@
 #include <QGraphicsView>
 #include <QPushButton>
 
+#include "graphwidget.h"
+#include <QApplication>
+
 
 namespace Ui {
 class MainWindow;
