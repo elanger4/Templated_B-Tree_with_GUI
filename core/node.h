@@ -3,22 +3,34 @@
 
 #include <iostream>
 #include <vector>
+
 template <typename T>
 class node {
     public:
-        node(){};
+        node(){
+			isLeaf = true;		
+		};
         ~node(){};
-        int leafInsert(T value) {
-            int i = 0;
-            while (value > keys[i])
-                i++;
-            keys.insert(i, value);
+
+        int nodeInsert(T value) {
+            unsigned long i = 0;
+			 if (keys.size() == 0) {
+			 	keys.push_back(value);
+				children.push_back(nullptr);
+				return 0;
+			 } else {
+				while (value >= keys[i] && i < keys.size()) {
+					i++;
+					}
+				}
+            keys.insert(keys.begin() + i, value);
 			return i;
         }
+		
         std::vector< node<T>* > children;
-        std::vector< T* > keys;
+        std::vector<T> keys;
 		node<T> *parent;
-        bool leaf;
+        bool isLeaf;
 
 };
 

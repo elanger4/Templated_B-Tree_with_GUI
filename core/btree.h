@@ -13,6 +13,7 @@ class btree {
         void insert(T value);
         node<T>* search(T value);
         void printInOrder();
+		void deleteValue(T value);
         std::vector<std::string> readFile();
         void writeFile();
 		void btreeClean();

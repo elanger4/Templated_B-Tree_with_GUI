@@ -4,8 +4,8 @@ template <typename T>
 btree<T>::btree(int d) {
     degree = d;
     root = new node<T>();
-    root->leaf = true;
-    std::cout << root->leaf;
+    root->isLeaf = true;
+    //std::cout << root->isLeaf;
 }
 
 template<typename T>
@@ -16,38 +16,18 @@ btree<T>::~btree() {
 
 template <typename T>
 void btree<T>::insert(T value) {
-    if (root == nullptr) {
-        node<T>* newNode = new node<T>();
-        root = newNode;
-    } else {
+	std::cout << "inserting: " << value << std::endl;
         insert(value, root);
-    }
 } 
 
 template <typename T>
 void btree<T>::insert(T value, node<T> *nd) {  // k=value
 
-    // node<T> *x = root;
-    // while (!x->leaf) {
-        // int i = 0;
-        // while (value > x->keys[i] && i < x->keys.length())
-            // i++;
-        // node<T> *y = x->children[i];
-        // if (y->keys.length() < degree) //potential off by one
-            // x = y;
-        // else {
-            // //split y and change x to point to one of the two parts of y.
-            // //If k is smaller than mid key in y, then set x as first part of y.
-                // //Else second part of y. 
-            // //When we split y, we move a key from y to its parent x.
-        // }
-    //}
-    //x is now a leaf. 
-    //insert k into x basic
-	if (!(nd->leaf)) {
+	//the node is not a leaf
+	if (!(nd->isLeaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
 			if (value <= nd->keys[i]) {
-				insert(value, nd->keys[i]);
+				insert(value, nd->children[i]);
 				break;
 			} else if (value > nd->keys.size()-1) {
 				insert(value, nd->children[nd->children.size()-1]);
@@ -55,54 +35,84 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
 			}
 		}
 	} else {
-		nd->leafInsert(value, nd);
+			nd->nodeInsert(value);
+		if (nd->keys.size() == degree) {
+			rotate(value, nd);
+		}
 	}
 }
 
 template <typename T>
 void btree<T>::rotate(T value, node<T> *nd) {
 //	now we have to rotate
-	if (nd->keys.size() ==  degree) {
-		//splits the node
-		//find the middle of the nd->keys and creates new nodes 
-		//for the front and back halves
-		int mid = degree / 2;
-		node<T> *frontHalf = new node<T>();
-		node<T> *backHalf = new node<T>();
+	std::cout << "rotate called\n";
+	//splits the node
+	//find the middle of the nd->keys and creates new nodes 
+	//for the front and back halves
+	unsigned long mid = degree / 2;
+	node<T> *frontHalf = new node<T>();
+	node<T> *backHalf = new node<T>();
 
-		//sets the parents of the new nodes
-		frontHalf->parent = nd;
-		backHalf->parent = nd;
+	//sets the parents of the new nodes
+	frontHalf->children.push_back(nullptr);
+	backHalf->children.push_back(nullptr);
 
-		// copies over values in nodes into new nd->keys
-		// and clears out those values in that node
-		for (int i =0; i < nd->keys.size(); i++) {
-			if (i == mid) {
-				continue;
-			} else if (i < mid) {
-				frontHalf->keys.pushBack(nd->keys[i]);	
-				nd->keys.erase(i);
-			} else {
-				backHalf->keys.pushBack(nd->keys[i]);	
-				nd->keys.erase(i);
-			}
+	frontHalf->parent = nd;
+	backHalf->parent = nd;
+	nd->children.push_back(frontHalf);
+	nd->children.push_back(backHalf);
+
+	// copies over values in nodes into new nd->keys
+	// and clears out those values in that node
+	for (unsigned long i =0; i < nd->keys.size(); i++) {
+		if (i == mid) {
+			continue;
+		} else if (i < mid) {
+			frontHalf->keys.push_back(nd->keys[i]);	
+		//	frontHalf->children.push_back(nd->children[i]);	
+		//	backHalf->children.push_back(nd->children[i]);	
+		} else {
+			backHalf->keys.push_back(nd->keys[i]);	
 		}
+	}
+	for (unsigned long i =0; i < nd->keys.size(); i++) {
+		if (i == mid) {
+			continue;
+		} else if (i < mid) {
+			nd->keys.erase(nd->keys.begin());
+			nd->children.erase(nd->children.begin());
+		} else {
+			nd->keys.erase(nd->keys.begin() + 1);
+			nd->children.erase(nd->children.begin() + 1);
+		}
+	}
 
-		// if its not at the root
-		if (nd->parent != nullptr) {
-			//gets the position of where we inserted into the new node
-			int pos = nd->parent->keys->leafInsert(value);
+	// if its not at the root
+	nd->isLeaf = false;
+	if (nd->parent != nullptr) {
+		//gets the position of where we inserted into the new node
+		int pos = nd->parent->nodeInsert(value);
 
-			//sets the pointers the parent node
-			nd->parent->children[pos] = frontHalf;
-			nd->parent->children[pos+1] = backHalf;
-			nd->parent->leafInsert(mid);
+		//sets the pointers the parent node
+		nd->parent->children[pos] = frontHalf;
+		nd->parent->children[pos+1] = backHalf;
+	//	nd->parent->nodeInsert(mid);
+		
+	} 
 
-			rotate(nd->parent);
 
-			delete nd;
+	frontHalf->isLeaf = true;
+	for (unsigned long i =0; i < frontHalf->children.size(); i++) {
+		if (frontHalf->children[i] != nullptr) {
+			frontHalf->isLeaf = false;
+		}
+	}
 
-		} 
+	backHalf->isLeaf = true;
+	for (unsigned long i =0; i < backHalf->children.size(); i++) {
+		if (backHalf->children[i] != nullptr) {
+			backHalf->isLeaf = false;
+		}
 	}
 }
 
@@ -127,36 +137,54 @@ node<T>* btree<T>::search(T value, node<T> *nd) {
 	for (unsigned long i = 0; i < nd->keys.size(); i++) {
 		if (value == nd->keys[i]) {
 			return nd;
-		} else if (value < nd->keys[i]) {
-			search(value, nd->keys[i]);
-			break;
+		} 
+	}
+		
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+		if (value > nd->keys[i] && value < nd->keys[i+1]) {
+			search(value, nd->children[i+1]);
 		} else if (value > nd->keys.size()-1) {
-			search(nd->children[nd->children.size()-1], value);
+			search(value, nd->children[nd->children.size()-1]);
 			break;
 		}
 	}
+	return nullptr;
 }
 
+template <typename T>
+void btree<T>::deleteValue(T value) {
+	node<T> *deleteNode = search(value);
+	if (deleteNode->isLeaf) {
+		for (unsigned long i =0; i < deleteNode->keys.size(); i++) {
+			if (value == deleteNode->keys[i]) {
+				deleteNode->keys.erase(deleteNode->keys.begin()+i);
+			}
+		}
+	}
+}
 
 template <typename T>
 void btree<T>::printInOrder() {
 	if (root == nullptr)
 		return;
 
-	inOrder(root);
+	printInOrder(root);
 }
 
 template <typename T>
 void btree<T>::printInOrder(node<T> *nd) {
-	for (unsigned long i = 0; i < nd->children.size(); i++) {
+
+	//probably have to fix the bounds on this
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+
 		if (nd->children[i] != nullptr) {
-			inOrder(nd->children[i]);
+			printInOrder(nd->children[i]);
+			std::cout << nd->keys[i] << " ";
 		} else {
-			if (i < nd->keys.size()) {
-				std::cout << nd->keys[i];
-			}
+				std::cout << nd->keys[i] << " ";
 		}
 	}
+	std::cout << std::endl;
 }
 
 template <typename T>
