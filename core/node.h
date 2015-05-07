@@ -11,12 +11,17 @@ class node {
         ~node(){};
 
         int nodeInsert(T value) {
-            int i = 0;
-            while (value > keys[i]) {
-				i++;
-			}
-
-            keys.insert(i, value);
+            unsigned long i = 0;
+			 if (keys.size() == 0) {
+			 	keys.push_back(value);
+				children.push_back(nullptr);
+				return 0;
+			 } else {
+				while (value >= keys[i] && i < keys.size()) {
+					i++;
+					}
+				}
+            keys.insert(keys.begin() + i, value);
 			return i;
         }
 		

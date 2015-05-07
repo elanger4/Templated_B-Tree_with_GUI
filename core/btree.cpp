@@ -5,7 +5,7 @@ btree<T>::btree(int d) {
     degree = d;
     root = new node<T>();
     root->isLeaf = true;
-    std::cout << root->isLeaf;
+    //std::cout << root->isLeaf;
 }
 
 template<typename T>
@@ -19,6 +19,8 @@ void btree<T>::insert(T value) {
     if (root == nullptr) {
         node<T>* newNode = new node<T>();
         root = newNode;
+		std::cout << "helper works?\n";
+
     } else {
         insert(value, root);
     }
@@ -44,29 +46,40 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
     //}
     //x is now a leaf. 
     //insert k into x basic
+	//
+			std::cout << "working1\n";
 	if (!(nd->isLeaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
+			std::cout << "working2\n";
 			if (value <= nd->keys[i]) {
+			std::cout << "working3\n";
 				insert(value, nd->children[i]);
 				break;
 			} else if (value > nd->keys.size()-1) {
+			std::cout << "working3\n";
 				insert(value, nd->children[nd->children.size()-1]);
 				break;
 			}
 		}
 	} else {
-		nd->nodeInsert(value);
+			std::cout << "working5\n";
+		if (nd->keys.size() == degree) {
+			rotate(value, nd);
+		} else {
+			nd->nodeInsert(value);
+		}
 	}
 }
 
 template <typename T>
 void btree<T>::rotate(T value, node<T> *nd) {
 //	now we have to rotate
+	std::cout << "rotate called\n";
 	if (nd->keys.size() ==  degree) {
 		//splits the node
 		//find the middle of the nd->keys and creates new nodes 
 		//for the front and back halves
-		int mid = degree / 2;
+		unsigned long mid = degree / 2;
 		node<T> *frontHalf = new node<T>();
 		node<T> *backHalf = new node<T>();
 
@@ -76,17 +89,17 @@ void btree<T>::rotate(T value, node<T> *nd) {
 
 		// copies over values in nodes into new nd->keys
 		// and clears out those values in that node
-		for (int i =0; i < nd->keys.size(); i++) {
+		for (unsigned long i =0; i < nd->keys.size(); i++) {
 			if (i == mid) {
 				continue;
 			} else if (i < mid) {
-				frontHalf->keys.pushBack(nd->keys[i]);	
-				frontHalf->children.pushBack(nd->children[i]);	
-				nd->keys.erase(i);
+				frontHalf->keys.push_back(nd->keys[i]);	
+				frontHalf->children.push_back(nd->children[i]);	
+				nd->keys.erase(nd->keys.begin() + i);
 			} else {
-				backHalf->keys.pushBack(nd->keys[i]);	
-				backHalf->children.pushBack(nd->children[i]);	
-				nd->keys.erase(i);
+				backHalf->keys.push_back(nd->keys[i]);	
+				backHalf->children.push_back(nd->children[i]);	
+				nd->keys.erase(nd->keys.begin() + i);
 			}
 		}
 
@@ -94,29 +107,26 @@ void btree<T>::rotate(T value, node<T> *nd) {
 		nd->isLeaf = false;
 		if (nd->parent != nullptr) {
 			//gets the position of where we inserted into the new node
-			int pos = nd->parent->keys->nodeInsert(value);
+			int pos = nd->parent->nodeInsert(value);
 
 			//sets the pointers the parent node
 			nd->parent->children[pos] = frontHalf;
 			nd->parent->children[pos+1] = backHalf;
 			nd->parent->nodeInsert(mid);
 			
-
-			rotate(nd->parent);
-
 			delete nd;
 		} 
 
 
 		frontHalf->isLeaf = true;
-		for (int i =0; i < frontHalf->children.size(); i++) {
+		for (unsigned long i =0; i < frontHalf->children.size(); i++) {
 			if (frontHalf->children[i] != nullptr) {
 				frontHalf->isLeaf = false;
 			}
 		}
 
 		backHalf->isLeaf = true;
-		for (int i =0; i < backHalf->children.size(); i++) {
+		for (unsigned long i =0; i < backHalf->children.size(); i++) {
 			if (backHalf->children[i] != nullptr) {
 				backHalf->isLeaf = false;
 			}
@@ -161,20 +171,23 @@ void btree<T>::printInOrder() {
 	if (root == nullptr)
 		return;
 
-	inOrder(root);
+	printInOrder(root);
 }
 
 template <typename T>
 void btree<T>::printInOrder(node<T> *nd) {
-	for (unsigned long i = 0; i < nd->children.size(); i++) {
+
+	//probably have to fix the bounds on this
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
 		if (nd->children[i] != nullptr) {
-			inOrder(nd->children[i]);
+			printInOrder(nd->children[i]);
 		} else {
 			if (i < nd->keys.size()) {
-				std::cout << nd->keys[i];
+				std::cout << nd->keys[i] << " ";
 			}
 		}
 	}
+	std::cout << std::endl;
 }
 
 template <typename T>
