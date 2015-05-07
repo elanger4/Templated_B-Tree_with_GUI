@@ -95,13 +95,19 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			} else if (i < mid) {
 				frontHalf->keys.push_back(nd->keys[i]);	
 				frontHalf->children.push_back(nd->children[i]);	
-				nd->keys.erase(nd->keys.begin() + i);
 			} else {
 				backHalf->keys.push_back(nd->keys[i]);	
 				backHalf->children.push_back(nd->children[i]);	
+			}
+		}
+		for (unsigned long i =0; i < nd->keys.size(); i++) {
+			if (i == mid) {
+				continue;
+			} else {
 				nd->keys.erase(nd->keys.begin() + i);
 			}
 		}
+
 
 		// if its not at the root
 		nd->isLeaf = false;
