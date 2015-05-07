@@ -47,10 +47,9 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
 		}
 	} else {
 			std::cout << "working5\n";
-		if (nd->keys.size() == degree-1) {
-			rotate(value, nd);
-		} else {
 			nd->nodeInsert(value);
+		if (nd->keys.size() == degree) {
+			rotate(value, nd);
 		}
 	}
 }
@@ -59,7 +58,7 @@ template <typename T>
 void btree<T>::rotate(T value, node<T> *nd) {
 //	now we have to rotate
 	std::cout << "rotate called\n";
-	if (nd->keys.size() ==  degree-1) {
+	if (nd->keys.size() ==  degree) {
 		//splits the node
 		//find the middle of the nd->keys and creates new nodes 
 		//for the front and back halves
