@@ -29,25 +29,7 @@ void btree<T>::insert(T value) {
 template <typename T>
 void btree<T>::insert(T value, node<T> *nd) {  // k=value
 
-    // node<T> *x = root;
-    // while (!x->leaf) {
-        // int i = 0;
-        // while (value > x->keys[i] && i < x->keys.length())
-            // i++;
-        // node<T> *y = x->children[i];
-        // if (y->keys.length() < degree) //potential off by one
-            // x = y;
-        // else {
-            // //split y and change x to point to one of the two parts of y.
-            // //If k is smaller than mid key in y, then set x as first part of y.
-                // //Else second part of y. 
-            // //When we split y, we move a key from y to its parent x.
-        // }
-    //}
-    //x is now a leaf. 
-    //insert k into x basic
-	//
-			std::cout << "working1\n";
+	std::cout << "working1\n";
 	//the node is not a leaf
 	std::cout << "isLeaf: " << nd->isLeaf << std::endl;
 	if (!(nd->isLeaf)) {
@@ -77,7 +59,7 @@ template <typename T>
 void btree<T>::rotate(T value, node<T> *nd) {
 //	now we have to rotate
 	std::cout << "rotate called\n";
-	if (nd->keys.size() ==  degree) {
+	if (nd->keys.size() ==  degree-1) {
 		//splits the node
 		//find the middle of the nd->keys and creates new nodes 
 		//for the front and back halves
