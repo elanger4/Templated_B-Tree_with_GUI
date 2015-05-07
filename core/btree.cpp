@@ -58,74 +58,74 @@ template <typename T>
 void btree<T>::rotate(T value, node<T> *nd) {
 //	now we have to rotate
 	std::cout << "rotate called\n";
-	if (nd->keys.size() ==  degree) {
-		//splits the node
-		//find the middle of the nd->keys and creates new nodes 
-		//for the front and back halves
-		unsigned long mid = degree / 2;
-		node<T> *frontHalf = new node<T>();
-		node<T> *backHalf = new node<T>();
+	//splits the node
+	//find the middle of the nd->keys and creates new nodes 
+	//for the front and back halves
+	unsigned long mid = degree / 2;
+	node<T> *frontHalf = new node<T>();
+	node<T> *backHalf = new node<T>();
 
-		//sets the parents of the new nodes
-		frontHalf->children.push_back(nullptr);
-		backHalf->children.push_back(nullptr);
+	//sets the parents of the new nodes
+	frontHalf->children.push_back(nullptr);
+	backHalf->children.push_back(nullptr);
 
-		frontHalf->parent = nd;
-		backHalf->parent = nd;
-		nd->children.push_back(frontHalf);
-		nd->children.push_back(backHalf);
+	frontHalf->parent = nd;
+	backHalf->parent = nd;
+	nd->children.push_back(frontHalf);
+	nd->children.push_back(backHalf);
 
-		// copies over values in nodes into new nd->keys
-		// and clears out those values in that node
-		for (unsigned long i =0; i < nd->keys.size(); i++) {
-			if (i == mid) {
-				continue;
-			} else if (i < mid) {
-				frontHalf->keys.push_back(nd->keys[i]);	
-			//	frontHalf->children.push_back(nd->children[i]);	
-			//	backHalf->children.push_back(nd->children[i]);	
-			}
+	// copies over values in nodes into new nd->keys
+	// and clears out those values in that node
+	for (unsigned long i =0; i < nd->keys.size(); i++) {
+		if (i == mid) {
+			continue;
+		} else if (i < mid) {
+			frontHalf->keys.push_back(nd->keys[i]);	
+		//	frontHalf->children.push_back(nd->children[i]);	
+		//	backHalf->children.push_back(nd->children[i]);	
+		} else {
+			backHalf->keys.push_back(nd->keys[i]);	
 		}
-		std::cout << "Running?\n";
-		for (unsigned long i =0; i < nd->keys.size(); i++) {
-			if (i == mid) {
-				continue;
-			} else if (i < mid) {
-				nd->keys.erase(nd->keys.begin() + i);
-				nd->children.erase(nd->children.begin() + i);
-			} else {
-				nd->keys.erase(nd->keys.begin() + 1);
-				nd->children.erase(nd->children.begin() + 1);
-			}
+	}
+	std::cout << "Running?\n";
+	for (unsigned long i =0; i < nd->keys.size(); i++) {
+		if (i == mid) {
+			continue;
+		} else if (i < mid) {
+			nd->keys.erase(nd->keys.begin() + i);
+			nd->children.erase(nd->children.begin() + i);
+		} else {
+			nd->keys.erase(nd->keys.begin() + 1);
+			nd->children.erase(nd->children.begin() + 1);
 		}
+	}
 
-		std::cout << "Running1?\n";
-		// if its not at the root
-		nd->isLeaf = false;
-		if (nd->parent != nullptr) {
-			//gets the position of where we inserted into the new node
-			int pos = nd->parent->nodeInsert(value);
+	std::cout << "Running1?\n";
+	// if its not at the root
+	nd->isLeaf = false;
+	if (nd->parent != nullptr) {
+		//gets the position of where we inserted into the new node
+		int pos = nd->parent->nodeInsert(value);
 
-			//sets the pointers the parent node
-			nd->parent->children[pos] = frontHalf;
-			nd->parent->children[pos+1] = backHalf;
-		//	nd->parent->nodeInsert(mid);
-			
-		} 
+		//sets the pointers the parent node
+		nd->parent->children[pos] = frontHalf;
+		nd->parent->children[pos+1] = backHalf;
+	//	nd->parent->nodeInsert(mid);
+		
+	} 
 
 
-		frontHalf->isLeaf = true;
-		for (unsigned long i =0; i < frontHalf->children.size(); i++) {
-			if (frontHalf->children[i] != nullptr) {
-				frontHalf->isLeaf = false;
-			}
+	frontHalf->isLeaf = true;
+	for (unsigned long i =0; i < frontHalf->children.size(); i++) {
+		if (frontHalf->children[i] != nullptr) {
+			frontHalf->isLeaf = false;
 		}
+	}
 
-		backHalf->isLeaf = true;
-		for (unsigned long i =0; i < backHalf->children.size(); i++) {
-			if (backHalf->children[i] != nullptr) {
-				backHalf->isLeaf = false;
-			}
+	backHalf->isLeaf = true;
+	for (unsigned long i =0; i < backHalf->children.size(); i++) {
+		if (backHalf->children[i] != nullptr) {
+			backHalf->isLeaf = false;
 		}
 	}
 }
