@@ -17,13 +17,7 @@ btree<T>::~btree() {
 template <typename T>
 void btree<T>::insert(T value) {
 	std::cout << "inserting: " << value << std::endl;
-    if (root == nullptr) {
-        node<T>* newNode = new node<T>();
-        root = newNode;
-
-    } else {
         insert(value, root);
-    }
 } 
 
 template <typename T>
@@ -31,7 +25,6 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
 
 	std::cout << "working1\n";
 	//the node is not a leaf
-	std::cout << "isLeaf: " << nd->isLeaf << std::endl;
 	if (!(nd->isLeaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
 			std::cout << "working2\n";
@@ -87,20 +80,18 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			backHalf->keys.push_back(nd->keys[i]);	
 		}
 	}
-	std::cout << "Running?\n";
 	for (unsigned long i =0; i < nd->keys.size(); i++) {
 		if (i == mid) {
 			continue;
 		} else if (i < mid) {
-			nd->keys.erase(nd->keys.begin() + i);
-			nd->children.erase(nd->children.begin() + i);
+			nd->keys.erase(nd->keys.begin());
+			nd->children.erase(nd->children.begin());
 		} else {
 			nd->keys.erase(nd->keys.begin() + 1);
 			nd->children.erase(nd->children.begin() + 1);
 		}
 	}
 
-	std::cout << "Running1?\n";
 	// if its not at the root
 	nd->isLeaf = false;
 	if (nd->parent != nullptr) {
@@ -165,6 +156,21 @@ node<T>* btree<T>::search(T value, node<T> *nd) {
 	return nullptr;
 }
 
+template <typename T>
+void btree<T>::deleteValue(T value) {
+		std::cout << "delete running1";
+	node<T> *deleteNode = search(value);
+		std::cout << "delete running1";
+	if (deleteNode->isLeaf) {
+		std::cout << "delete running2";
+
+		for (unsigned long i =0; i < deleteNode->keys.size(); i++) {
+			if (value == deleteNode->keys[i]) {
+				deleteNode->keys.erase(deleteNode->keys.begin()+i);
+			}
+		}
+	}
+}
 
 template <typename T>
 void btree<T>::printInOrder() {

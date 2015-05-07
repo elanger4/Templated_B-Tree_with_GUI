@@ -7,7 +7,9 @@
 template <typename T>
 class node {
     public:
-        node(){};
+        node(){
+			isLeaf = true;		
+		};
         ~node(){};
 
         int nodeInsert(T value) {
