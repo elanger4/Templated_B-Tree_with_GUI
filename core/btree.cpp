@@ -16,10 +16,10 @@ btree<T>::~btree() {
 
 template <typename T>
 void btree<T>::insert(T value) {
+	std::cout << "inserting: " << value << std::endl;
     if (root == nullptr) {
         node<T>* newNode = new node<T>();
         root = newNode;
-		std::cout << "helper works?\n";
 
     } else {
         insert(value, root);
@@ -48,6 +48,8 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
     //insert k into x basic
 	//
 			std::cout << "working1\n";
+	//the node is not a leaf
+	std::cout << "isLeaf: " << nd->isLeaf << std::endl;
 	if (!(nd->isLeaf)) {
 		for (unsigned long i = 0; i < nd->keys.size(); i++) {
 			std::cout << "working2\n";
@@ -63,7 +65,7 @@ void btree<T>::insert(T value, node<T> *nd) {  // k=value
 		}
 	} else {
 			std::cout << "working5\n";
-		if (nd->keys.size() == degree) {
+		if (nd->keys.size() == degree-1) {
 			rotate(value, nd);
 		} else {
 			nd->nodeInsert(value);
@@ -84,6 +86,9 @@ void btree<T>::rotate(T value, node<T> *nd) {
 		node<T> *backHalf = new node<T>();
 
 		//sets the parents of the new nodes
+		frontHalf->children.push_back(nullptr);
+		backHalf->children.push_back(nullptr);
+
 		frontHalf->parent = nd;
 		backHalf->parent = nd;
 		nd->children.push_back(frontHalf);
@@ -96,23 +101,24 @@ void btree<T>::rotate(T value, node<T> *nd) {
 				continue;
 			} else if (i < mid) {
 				frontHalf->keys.push_back(nd->keys[i]);	
-				frontHalf->children.push_back(nd->children[i]);	
-			} else {
-				backHalf->keys.push_back(nd->keys[i]);	
-				backHalf->children.push_back(nd->children[i]);	
+			//	frontHalf->children.push_back(nd->children[i]);	
+			//	backHalf->children.push_back(nd->children[i]);	
 			}
 		}
 		std::cout << "Running?\n";
 		for (unsigned long i =0; i < nd->keys.size(); i++) {
 			if (i == mid) {
 				continue;
-			} else {
+			} else if (i < mid) {
 				nd->keys.erase(nd->keys.begin() + i);
 				nd->children.erase(nd->children.begin() + i);
+			} else {
+				nd->keys.erase(nd->keys.begin() + 1);
+				nd->children.erase(nd->children.begin() + 1);
 			}
 		}
 
-		std::cout << "Running?\n";
+		std::cout << "Running1?\n";
 		// if its not at the root
 		nd->isLeaf = false;
 		if (nd->parent != nullptr) {
@@ -122,9 +128,8 @@ void btree<T>::rotate(T value, node<T> *nd) {
 			//sets the pointers the parent node
 			nd->parent->children[pos] = frontHalf;
 			nd->parent->children[pos+1] = backHalf;
-			nd->parent->nodeInsert(mid);
+		//	nd->parent->nodeInsert(mid);
 			
-			delete nd;
 		} 
 
 
@@ -191,17 +196,14 @@ void btree<T>::printInOrder() {
 template <typename T>
 void btree<T>::printInOrder(node<T> *nd) {
 
-	std::cout << "called printInOrder()  ";
 	//probably have to fix the bounds on this
-	for (unsigned long i = 0; i < nd->children.size(); i++) {
+	for (unsigned long i = 0; i < nd->keys.size(); i++) {
+
 		if (nd->children[i] != nullptr) {
 			printInOrder(nd->children[i]);
-			std::cout << "child is: " << nd->children[i] << std::endl;
 			std::cout << nd->keys[i] << " ";
 		} else {
-			if (i < nd->keys.size()) {
 				std::cout << nd->keys[i] << " ";
-			}
 		}
 	}
 	std::cout << std::endl;
