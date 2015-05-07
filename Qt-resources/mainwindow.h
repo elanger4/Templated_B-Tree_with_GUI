@@ -2,6 +2,15 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QWidget>
+#include <QTextEdit>
+#include <QLabel>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QPushButton>
+
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +26,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    //QGraphicsView view;
+    //QGraphicsScene scene;
+
 };
 
 #endif // MAINWINDOW_H
