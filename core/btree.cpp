@@ -86,6 +86,8 @@ void btree<T>::rotate(T value, node<T> *nd) {
 		//sets the parents of the new nodes
 		frontHalf->parent = nd;
 		backHalf->parent = nd;
+		nd->children.push_back(frontHalf);
+		nd->children.push_back(backHalf);
 
 		// copies over values in nodes into new nd->keys
 		// and clears out those values in that node
@@ -100,14 +102,15 @@ void btree<T>::rotate(T value, node<T> *nd) {
 				backHalf->children.push_back(nd->children[i]);	
 			}
 		}
+		std::cout << "Running?\n";
 		for (unsigned long i =0; i < nd->keys.size(); i++) {
 			if (i == mid) {
 				continue;
 			} else {
 				nd->keys.erase(nd->keys.begin() + i);
+				nd->children.erase(nd->children.begin() + i);
 			}
 		}
-
 
 		// if its not at the root
 		nd->isLeaf = false;
