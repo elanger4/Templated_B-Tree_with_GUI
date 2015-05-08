@@ -14,4 +14,4 @@ main: main.cpp btree.h node.h
 #	$(COMPILER) $(FLAGS) -c main.cpp
 
 clean:
-	rm *.o *~ main
+	rm -f *.o *~ main

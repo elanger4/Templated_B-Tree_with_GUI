@@ -9,6 +9,7 @@ class node {
     public:
         node(){
 			isLeaf = true;		
+			children.push_back(nullptr);
 		};
         ~node(){};
 
