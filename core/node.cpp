@@ -403,7 +403,7 @@ node<T> *node<T>::search(T k) {
  
     // If key is not found here and this is a leaf node
     if (leaf == true)
-        return NULL;
+        return nullptr;
  
     // Go to the appropriate child
     return children[i]->search(k);
