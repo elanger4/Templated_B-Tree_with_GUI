@@ -1,35 +1,36 @@
 #ifndef BTREE_H_
 #define BTREE_H_
-
 #include <iostream>
 #include "node.h"
-#include <fstream>
 
 template <typename T>
 class btree {
-    public:
-        btree(int d);
-        ~btree();
-        void insert(T value);
-        node<T>* search(T value);
-        void printInOrder();
-		void deleteValue(T value);
-        std::vector<std::string> readFile();
-        void writeFile();
-		void btreeClean();
-
-    private:
-		void insertRotate(T value, node<T> *nd);
-		void rotate(node<T> *nd);
-		void btreeClean(node<T> *nd);
-        void insert(T value, node<T> *nd);
-        node<T>* search(T value, node<T> *nd);
-        void printInOrder(node<T> *nd);
-
-        node<T> *root;
-        unsigned int degree;
+    node<T> *root; // Pointer to root node
+    int degree;  // 't' Minimum degree 
+public:
+ 
+    // Constructor (Initializes tree as empty)
+    btree(int _degree) {
+        root = NULL;
+        degree = _degree;
+    }
+ 
+    void traverse() {
+        if (root != NULL) root->traverse();
+    }
+ 
+    // function to search a key in this tree
+    node<T>* search(T k) {
+        return (root == NULL)? NULL : root->search(k);
+    }
+ 
+    // The main function that inserts a new key in this B-Tree
+    void insert(T k);
+ 
+    // The main function that removes a new key in thie B-Tree
+    void remove(T k);
+ 
 };
 
 #include "btree.cpp"
-
 #endif
