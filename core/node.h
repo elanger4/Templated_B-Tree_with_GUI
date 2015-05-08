@@ -6,9 +6,9 @@
 template <typename T>
 class node {
     int *keys;  // An array of keys
-    int degree;      // used to be 't':  Minimum degree (defines the range for number of keys)
+    int degree;      //  Minimum degree (defines the range for number of keys)
     node **children; // An array of child pointers
-    int currentKeys;     // used to be 'n': Current number of keys
+    int currentKeys;     //  Current number of keys
     bool leaf; // Is true when node is leaf. Otherwise false
  
 	public:
@@ -60,7 +60,7 @@ class node {
 		void insertNonFull(T k);
 	 
 		// A utility function to split the child y of this node. i is index
-		// of y in child array C[].  The Child y must be full when this
+		// of y in child array children[].  The Child y must be full when this
 		// function is called
 		void splitChild(int i, node *y);
 	 
@@ -85,15 +85,15 @@ class node {
 		int getSucc(int idx);
 	 
 		// A function to fill up the child node present in the idx-th
-		// position in the C[] array if that child has less than t-1 keys
+		// position in the children[] array if that child has less than degree-1 keys
 		void fill(int idx);
 	 
-		// A function to borrow a key from the C[idx-1]-th node and place
-		// it in C[idx]th node
+		// A function to borrow a key from the children[idx-1]-th node and place
+		// it in children[idx]th node
 		void borrowFromPrev(int idx);
 	 
-		// A function to borrow a key from the C[idx+1]-th node and place it
-		// in C[idx]th node
+		// A function to borrow a key from the children[idx+1]-th node and place it
+		// in children[idx]th node
 		void borrowFromNext(int idx);
 	 
 		// A function to merge idx-th child of the node with (idx+1)th child of
@@ -101,8 +101,7 @@ class node {
 		void merge(int idx);
 	 
 		// Make BTree friend of this so that we can access private members of
-		// this class in BTree functions
-//		friend class btree;
+		// this class in btree functions
 };
 
 #include "node.cpp"

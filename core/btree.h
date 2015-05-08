@@ -6,7 +6,7 @@
 template <typename T>
 class btree {
     node<T> *root; // Pointer to root node
-    int degree;  // 't' Minimum degree 
+    int degree;  // Minimum degree 
 public:
  
     // Constructor (Initializes tree as empty)
@@ -24,10 +24,10 @@ public:
         return (root == NULL)? NULL : root->search(k);
     }
  
-    // The main function that inserts a new key in this B-Tree
+    // The main function that inserts a new key in this btree
     void insert(T k);
  
-    // The main function that removes a new key in thie B-Tree
+    // The main function that removes a new key in thie btree
     void remove(T k);
  
 };

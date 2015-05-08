@@ -52,7 +52,7 @@ void node<T>::remove(T k) {
         // with the last child of this node
         bool flag = ( (idx==currentKeys)? true : false );
  
-        // If the child where the key is supposed to exist has less that t keys,
+        // If the child where the key is supposed to exist has less that degree keys,
         // we fill that child
         if (children[idx]->currentKeys < degree)
             fill(idx);
@@ -88,7 +88,7 @@ void node<T>::removeFromNonLeaf(int idx) {
  
     int k = keys[idx];
  
-    // If the child that precedes k (C[idx]) has atleast t keys,
+    // If the child that precedes k (children[idx]) has atleast degree keys,
     // find the predecessor 'pred' of k in the subtree rooted at
     // children[idx]. Replace k by pred. Recursively delete pred
     // in children[idx]
