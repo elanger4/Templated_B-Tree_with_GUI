@@ -74,6 +74,7 @@ QList<Edge *> Node::edges() const
 //! [2]
 void Node::calculateForces()
 {
+   
     if (!scene() || scene()->mouseGrabberItem() == this) {
         newPos = pos();
         return;
@@ -124,6 +125,7 @@ void Node::calculateForces()
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
+    
 }
 //! [6]
 
@@ -153,8 +155,10 @@ QPainterPath Node::shape() const
     //Appears to only control click area.
     QPainterPath path;
     //path.addEllipse(-10, -10, 20, 20);
-    qreal adjust = 2;
+    /*qreal adjust = 2;
     path.addRect(QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust));
+    */
+    path.addRect(QRectF(-30, -10, 60, 20));
     return path;
 }
 //! [9]

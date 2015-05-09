@@ -59,7 +59,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     //Magic mouse location zooming behavior
-    //setTransformationAnchor(AnchorUnderMouse);
+    setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     //600, 600
     setMinimumSize(400, 400);
@@ -90,7 +90,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(new Edge(node9, node8));
 
     node4->setPos(-50, 0);
-    centerNode->setPos(0, -50);
+    centerNode->setPos(0, 0);
     node6->setPos(50, 0);
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
