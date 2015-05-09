@@ -1,223 +1,64 @@
 #include "btree.h"
+#include "node.h"
 
+// The main function that inserts a new key in this B-Tree
 template <typename T>
-btree<T>::btree(int d) {
-    degree = d;
-    root = new node<T>();
-    root->isLeaf = true;
-    //std::cout << root->isLeaf;
-}
-
-template<typename T>
-btree<T>::~btree() {
-	btreeClean(root);
-}
-
-
-template <typename T>
-void btree<T>::insert(T value) {
-	std::cout << "inserting: " << value << std::endl;
-        insert(value, root);
-} 
-
-template <typename T>
-void btree<T>::insert(T value, node<T> *nd) {  // k=value
-
-	//the node is not a leaf
-	if (!(nd->isLeaf)) {
-		for (unsigned long i = 0; i < nd->keys.size(); i++) {
-			if (value <= nd->keys[i]) {
-				insert(value, nd->children[i]);
-				break;
-			} else if (value > nd->keys.size()-1) {
-				insert(value, nd->children[nd->children.size()-1]);
-				break;
-			}
-		}
-	} else {
-			nd->nodeInsert(value);
-		if (nd->keys.size() == degree) {
-			rotate(value, nd);
-		}
-	}
-}
-
-template <typename T>
-void btree<T>::rotate(T value, node<T> *nd) {
-//	now we have to rotate
-	std::cout << "rotate called\n";
-	//splits the node
-	//find the middle of the nd->keys and creates new nodes 
-	//for the front and back halves
-	unsigned long mid = degree / 2;
-	node<T> *frontHalf = new node<T>();
-	node<T> *backHalf = new node<T>();
-
-	//sets the parents of the new nodes
-	frontHalf->children.push_back(nullptr);
-	backHalf->children.push_back(nullptr);
-
-	frontHalf->parent = nd;
-	backHalf->parent = nd;
-	nd->children.push_back(frontHalf);
-	nd->children.push_back(backHalf);
-
-	// copies over values in nodes into new nd->keys
-	// and clears out those values in that node
-	for (unsigned long i =0; i < nd->keys.size(); i++) {
-		if (i == mid) {
-			continue;
-		} else if (i < mid) {
-			frontHalf->keys.push_back(nd->keys[i]);	
-		//	frontHalf->children.push_back(nd->children[i]);	
-		//	backHalf->children.push_back(nd->children[i]);	
-		} else {
-			backHalf->keys.push_back(nd->keys[i]);	
-		}
-	}
-	for (unsigned long i =0; i < nd->keys.size(); i++) {
-		if (i == mid) {
-			continue;
-		} else if (i < mid) {
-			nd->keys.erase(nd->keys.begin());
-			nd->children.erase(nd->children.begin());
-		} else {
-			nd->keys.erase(nd->keys.begin() + 1);
-			nd->children.erase(nd->children.begin() + 1);
-		}
-	}
-
-	// if its not at the root
-	nd->isLeaf = false;
-	if (nd->parent != nullptr) {
-		//gets the position of where we inserted into the new node
-		int pos = nd->parent->nodeInsert(value);
-
-		//sets the pointers the parent node
-		nd->parent->children[pos] = frontHalf;
-		nd->parent->children[pos+1] = backHalf;
-	//	nd->parent->nodeInsert(mid);
-		
-	} 
-
-
-	frontHalf->isLeaf = true;
-	for (unsigned long i =0; i < frontHalf->children.size(); i++) {
-		if (frontHalf->children[i] != nullptr) {
-			frontHalf->isLeaf = false;
-		}
-	}
-
-	backHalf->isLeaf = true;
-	for (unsigned long i =0; i < backHalf->children.size(); i++) {
-		if (backHalf->children[i] != nullptr) {
-			backHalf->isLeaf = false;
-		}
-	}
-}
-
-	
-//}
-
-
-template <typename T>
-node<T>* btree<T>::search(T value) {
-
-    if (root == nullptr) {
-        return nullptr;
-    } else {
-        return search(value, root);
+void btree<T>::insert(T k) {
+    // If tree is empty
+    if (root == NULL) {
+        // Allocate memory for root
+        root = new node<T>(degree, true);
+        root->setKey(0,k);  // Insert key
+        root->setCurrentKeys(1);  // Update number of keys in root
+    }
+    else {  // If tree is not empty
+        // If root is full, then tree grows in height
+        if (root->getCurrentKeys() == 2*degree-1) {
+            // Allocate memory for new root
+            node<T> *s = new node<T>(degree, false);
+ 
+            // Make old root as child of new root
+            s->setChildren(0, root);
+ 
+            // Split the old root and move 1 key to the new root
+            s->splitChild(0, root);
+ 
+            // New root has two children now.  Decide which of the
+            // two children is going to have new key
+            int i = 0;
+            if (s->getKey(0) < k)
+                i++;
+            s->getChildren(i)->insertNonFull(k);
+ 
+            // Change root
+            root = s;
+        }
+        else  // If root is not full, call insertNonFull for root
+            root->insertNonFull(k);
     }
 }
 
-
-
 template <typename T>
-node<T>* btree<T>::search(T value, node<T> *nd) {
-	for (unsigned long i = 0; i < nd->keys.size(); i++) {
-		if (value == nd->keys[i]) {
-			return nd;
-		} 
-	}
-		
-	for (unsigned long i = 0; i < nd->keys.size(); i++) {
-		if (value > nd->keys[i] && value < nd->keys[i+1]) {
-			search(value, nd->children[i+1]);
-		} else if (value > nd->keys.size()-1) {
-			search(value, nd->children[nd->children.size()-1]);
-			break;
-		}
-	}
-	return nullptr;
+void btree<T>::remove(T k) {
+    if (!root) {
+		std::cout << "The tree is empty\n";
+        return;
+    }
+ 
+    // Call the remove function for root
+    root->remove(k);
+ 
+    // If the root node has 0 keys, make its first child as the new root
+    //  if it has a child, otherwise set root as NULL
+    if (root->getCurrentKeys()==0) {
+        node<T> *tmp = root;
+        if (root->getLeaf())
+            root = NULL;
+        else
+            root = root->getChildren(0);
+ 
+        // Free the old root
+        delete tmp;
+    }
+    return;
 }
-
-template <typename T>
-void btree<T>::deleteValue(T value) {
-	node<T> *deleteNode = search(value);
-	if (deleteNode->isLeaf) {
-		for (unsigned long i =0; i < deleteNode->keys.size(); i++) {
-			if (value == deleteNode->keys[i]) {
-				deleteNode->keys.erase(deleteNode->keys.begin()+i);
-			}
-		}
-	}
-}
-
-template <typename T>
-void btree<T>::printInOrder() {
-	if (root == nullptr)
-		return;
-
-	printInOrder(root);
-}
-
-template <typename T>
-void btree<T>::printInOrder(node<T> *nd) {
-
-	//probably have to fix the bounds on this
-	for (unsigned long i = 0; i < nd->keys.size(); i++) {
-
-		if (nd->children[i] != nullptr) {
-			printInOrder(nd->children[i]);
-			std::cout << nd->keys[i] << " ";
-		} else {
-				std::cout << nd->keys[i] << " ";
-		}
-	}
-	std::cout << std::endl;
-}
-
-template <typename T>
-std::vector<std::string> btree<T>::readFile() {
-    std::ifstream fs("input.txt");
-    std::string line;
-    std::vector<std::string> contents;
-    while (std::getline(fs, line))
-        contents.push_back(line);
-    return contents;
-}
-
-template <typename T>
-void btree<T>::writeFile() {
-    
-}
-
-template <typename T>
-void btree<T>::btreeClean() {
-	if (root == nullptr) {
-		return;
-	}
-	btreeClean(root);
-	root = nullptr;
-}
-
-template <typename T>
-void btree<T>::btreeClean(node<T> *nd) {
-	if (nd == nullptr)
-		return;
-	for (unsigned long i = 0; i < nd->children.size(); i++) {
-		btreeClean(nd->children[i]);
-	}
-	 delete nd;
-}
-
