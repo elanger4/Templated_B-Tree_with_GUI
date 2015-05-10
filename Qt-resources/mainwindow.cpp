@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "btree.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,8 +19,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton *button = new QPushButton();
     QTextEdit *edit = new QTextEdit();
 
+
+
+    /* The fact that this builds blows my mind */
+    btree<int> t(3);
+    t.insert(1);
+    t.insert(3);
+    t.insert(7);
+    t.insert(10);
+    t.insert(11);
+    t.insert(100);
+    t.insert(200);
+    t.insert(250);
+    t.insert(5);
+    /* "Be assertive!! Not INsertive" */
+    std::vector<int*>* temp = t.convertToJack();
+
     /* Graph Widget */
-    GraphWidget *widget = new GraphWidget();
+    //GraphWidget *widget = new GraphWidget();
+    //GraphWidget *widget = new GraphWidget(this);
+    GraphWidget *widget = new GraphWidget(this, temp);
+
 
 
     //Sizing

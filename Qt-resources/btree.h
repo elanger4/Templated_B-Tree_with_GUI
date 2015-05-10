@@ -29,6 +29,9 @@ public:
  
     // The main function that removes a new key in thie btree
     void remove(T k);
+
+    //Jack's function to give his std::vector
+    std::vector<int*>* convertToJack();
  
 };
 

@@ -1,5 +1,7 @@
 #include "bnode.h"
 
+#define nullptr 0
+
 template <typename T>
 bnode<T>::bnode(int degree1, bool leaf1) {
     // Copy the given minimum degree and leaf property
@@ -389,6 +391,19 @@ void bnode<T>::traverse() {
          children[currentKeys]->traverse();
 }
  
+template <typename T>
+std::vector<int* >* bnode<T>::jackTraverse(std::vector<int* > *overall) {
+
+    overall->push_back(keys);
+
+    for (int i=0; i < currentKeys; i++) {
+        if (leaf == false)
+            children[i]->jackTraverse(overall);
+    }
+
+    return overall;
+}
+
 // Function to search key k in subtree rooted with this bnode
 template <typename T>
 bnode<T> *bnode<T>::search(T k) {

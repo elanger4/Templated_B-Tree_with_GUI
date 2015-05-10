@@ -62,3 +62,10 @@ void btree<T>::remove(T k) {
     }
     return;
 }
+
+template <typename T>
+std::vector<int*>* btree<T>::convertToJack() {
+    std::vector<int*> *temp = new std::vector<int*>();
+    temp = root->jackTraverse(temp);
+    return temp;
+}

@@ -42,6 +42,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <vector>
 
 class Node;
 
@@ -51,7 +52,7 @@ class GraphWidget : public QGraphicsView
     Q_OBJECT
 
 public:
-    GraphWidget(QWidget *parent = 0);
+    GraphWidget(QWidget *parent = 0, std::vector<int*>* = NULL);
 
     void itemMoved();
 

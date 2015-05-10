@@ -2,6 +2,9 @@
 #define bnode_H_
 
 #include <iostream>
+#include <vector>
+
+#define nullptr 0
 
 template <typename T>
 class bnode {
@@ -46,6 +49,8 @@ class bnode {
 	 
 		// A function to traverse all bnodes in a subtree rooted with this bnode
 		void traverse();
+        //A similar function to traverse for Jack
+        std::vector<int* >* jackTraverse(std::vector<int*>*);
 	 
 		// A function to search a key in subtree rooted with this bnode.
 		bnode<T> *search(T k);   // returns NULL if k is not present.
