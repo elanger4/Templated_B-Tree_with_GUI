@@ -48,13 +48,18 @@
 #include <QStyleOption>
 
 //! [0]
-Node::Node(GraphWidget *graphWidget)
+Node::Node(GraphWidget *graphWidget, QString tooltip)
     : graph(graphWidget)
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+
+    //Jack
+    this->setAcceptHoverEvents(true);
+    this->setToolTip(tooltip);
+    //
 }
 //! [0]
 
@@ -153,6 +158,7 @@ QRectF Node::boundingRect() const
 QPainterPath Node::shape() const
 {
     //Appears to only control click area.
+
     QPainterPath path;
     //path.addEllipse(-10, -10, 20, 20);
     /*qreal adjust = 2;
@@ -222,3 +228,13 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 //! [12]
+
+
+
+void Node::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+    
+}
+void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+
+}
+

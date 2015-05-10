@@ -44,6 +44,9 @@
 #include <QGraphicsItem>
 #include <QList>
 
+#include <QGraphicsSceneHoverEvent>
+#include <QString>
+
 class Edge;
 class GraphWidget;
 QT_BEGIN_NAMESPACE
@@ -54,7 +57,7 @@ QT_END_NAMESPACE
 class Node : public QGraphicsItem
 {
 public:
-    Node(GraphWidget *graphWidget);
+    Node(GraphWidget *graphWidget, QString tooltip = "");
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
@@ -74,6 +77,9 @@ protected:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    //Jack
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QList<Edge *> edgeList;

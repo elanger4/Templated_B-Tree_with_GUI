@@ -1,11 +1,11 @@
 #ifndef BTREE_H_
 #define BTREE_H_
 #include <iostream>
-#include "node.h"
+#include "bnode.h"
 
 template <typename T>
 class btree {
-    node<T> *root; // Pointer to root node
+    bnode<T> *root; // Pointer to root bnode
     int degree;  // Minimum degree 
 public:
  
@@ -20,7 +20,7 @@ public:
     }
  
     // function to search a key in this tree
-    node<T>* search(T k) {
+    bnode<T>* search(T k) {
         return (root == NULL)? NULL : root->search(k);
     }
  

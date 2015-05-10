@@ -1,5 +1,5 @@
 #include "btree.h"
-#include "node.h"
+#include "bnode.h"
 
 // The main function that inserts a new key in this B-Tree
 template <typename T>
@@ -7,7 +7,7 @@ void btree<T>::insert(T k) {
     // If tree is empty
     if (root == NULL) {
         // Allocate memory for root
-        root = new node<T>(degree, true);
+        root = new bnode<T>(degree, true);
         root->setKey(0,k);  // Insert key
         root->setCurrentKeys(1);  // Update number of keys in root
     }
@@ -15,7 +15,7 @@ void btree<T>::insert(T k) {
         // If root is full, then tree grows in height
         if (root->getCurrentKeys() == 2*degree-1) {
             // Allocate memory for new root
-            node<T> *s = new node<T>(degree, false);
+            bnode<T> *s = new bnode<T>(degree, false);
  
             // Make old root as child of new root
             s->setChildren(0, root);
@@ -48,10 +48,10 @@ void btree<T>::remove(T k) {
     // Call the remove function for root
     root->remove(k);
  
-    // If the root node has 0 keys, make its first child as the new root
+    // If the root bnode has 0 keys, make its first child as the new root
     //  if it has a child, otherwise set root as NULL
     if (root->getCurrentKeys()==0) {
-        node<T> *tmp = root;
+        bnode<T> *tmp = root;
         if (root->getLeaf())
             root = NULL;
         else

@@ -68,7 +68,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 //! [1]
     Node *node4 = new Node(this);
-    centerNode = new Node(this);
+    centerNode = new Node(this, "poop");
     Node *node6 = new Node(this);
     Node *node7 = new Node(this);
     Node *node8 = new Node(this);
@@ -86,15 +86,16 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(new Edge(centerNode, node8));
     scene->addItem(new Edge(node6, node9));
     scene->addItem(new Edge(node7, node4));
-    scene->addItem(new Edge(node8, node7));
-    scene->addItem(new Edge(node9, node8));
+    //scene->addItem(new Edge(node8, node7));
+    //scene->addItem(new Edge(node9, node8));
 
-    node4->setPos(-50, 0);
+    //node4->setPos(-50, 0);
     centerNode->setPos(0, 0);
-    node6->setPos(50, 0);
+    /*node6->setPos(50, 0);
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
     node9->setPos(50, 50);
+    */
 }
 //! [1]
 

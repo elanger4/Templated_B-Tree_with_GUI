@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QPushButton *button = new QPushButton();
     QTextEdit *edit = new QTextEdit();
 
+    /* Graph Widget */
     GraphWidget *widget = new GraphWidget();
 
 
