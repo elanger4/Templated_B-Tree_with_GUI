@@ -69,3 +69,9 @@ std::vector<int*>* btree<T>::convertToJack() {
     temp = root->jackTraverse(temp);
     return temp;
 }
+
+template <typename T>
+bnode<T>* btree<T>::getRoot() {
+    return root;
+}
+

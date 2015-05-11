@@ -46,6 +46,7 @@
 
 #include <QGraphicsSceneHoverEvent>
 #include <QString>
+#include <string>
 
 class Edge;
 class GraphWidget;
@@ -57,7 +58,7 @@ QT_END_NAMESPACE
 class Node : public QGraphicsItem
 {
 public:
-    Node(GraphWidget *graphWidget, QString tooltip = "");
+    Node(GraphWidget *graphWidget, std::string tooltip = "");
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;

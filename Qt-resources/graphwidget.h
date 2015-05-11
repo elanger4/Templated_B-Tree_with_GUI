@@ -42,7 +42,9 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+
 #include <vector>
+#include <btree.h>
 
 class Node;
 
@@ -52,7 +54,7 @@ class GraphWidget : public QGraphicsView
     Q_OBJECT
 
 public:
-    GraphWidget(QWidget *parent = 0, std::vector<int*>* = NULL);
+    GraphWidget(QWidget *parent = 0, btree<int> *t = NULL);
 
     void itemMoved();
 

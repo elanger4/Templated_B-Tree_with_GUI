@@ -46,9 +46,10 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <string>
 
 //! [0]
-Node::Node(GraphWidget *graphWidget, QString tooltip)
+Node::Node(GraphWidget *graphWidget, std::string tooltip)
     : graph(graphWidget)
 {
     setFlag(ItemIsMovable);
@@ -58,7 +59,8 @@ Node::Node(GraphWidget *graphWidget, QString tooltip)
 
     //Jack
     this->setAcceptHoverEvents(true);
-    this->setToolTip(tooltip);
+    QString qstr = QString::fromStdString(tooltip);
+    this->setToolTip(qstr);
     //
 }
 //! [0]

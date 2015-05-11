@@ -32,6 +32,8 @@ public:
 
     //Jack's function to give his std::vector
     std::vector<int*>* convertToJack();
+
+    bnode<T>* getRoot();
  
 };
 

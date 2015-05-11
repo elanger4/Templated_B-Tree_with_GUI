@@ -3,6 +3,12 @@
 #define nullptr 0
 
 template <typename T>
+std::string bnode<T>::getTooltip() {
+    std::string temp = "example tooltip";
+    return temp;
+}
+
+template <typename T>
 bnode<T>::bnode(int degree1, bool leaf1) {
     // Copy the given minimum degree and leaf property
     degree = degree1;
@@ -351,7 +357,7 @@ void bnode<T>::splitChild(int i, bnode<T> *y) {
  
     // Since this bnode is going to have a new child,
     // create space of new child
-    for (int j = degree; j >= i+1; j--)
+    for (int j = currentKeys; j >= i+1; j--)
         children[j+1] = children[j];
  
     // Link the new child to this bnode

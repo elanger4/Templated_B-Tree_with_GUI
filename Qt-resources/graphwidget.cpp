@@ -42,11 +42,13 @@
 #include "edge.h"
 #include "node.h"
 
+#include <stack>
 #include <math.h>
+#include <bnode.h>
 
 #include <QKeyEvent>
 
-GraphWidget::GraphWidget(QWidget *parent, std::vector<int*>* btree)
+GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
 : QGraphicsView(parent), timerId(0)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
@@ -61,18 +63,44 @@ GraphWidget::GraphWidget(QWidget *parent, std::vector<int*>* btree)
     setMinimumSize(400, 400);
     setWindowTitle(tr("B-Tree"));
 
+    std::stack<bnode<int>* > bstack;
+    std::stack<Node*> gstack;
+    bnode<int> *bcurrent = tree->getRoot();
+    Node *gcurrent = new Node(this, bcurrent->getTooltip());
+    Node *gparent;
+    bstack.push(bcurrent);
+    gstack.push(gcurrent);
+    //just make connections from current to all of currents children. 
+    while(!bstack.empty()) {
+        bcurrent = bstack.top();
+        bstack.pop();
+        for (int i = 0; i < temp->numChildren; i++) { //numChildren doesnt exist
+            gcurrent = new Node(this, bcurrent->getTooltip());
+            scene->addItem(gcurrent);
+            scene->addItem(new Edge(gcurrent, gparent));
+        }
 
-    centerNode = new Node(this, "ROOT");
+        //loop through children of temp, making gnodes and
+    }
+
+
+    std::string tooltip = "Root: ";
+    for (int i = 0; i < tree->getRoot()->currentKeys; i++) {
+        tooltip += tree->getRoot()->keys[i];
+        tooltip += ", ";
+    }
+    Node *centerNode = new Node(this, tooltip);
     scene->addItem(centerNode);
     centerNode->setPos(0, 0);
 
+    /*
     for (auto &element : *btree) {
         QString tooltip = "";
         tooltip += element[0];
         Node *temp = new Node(this, tooltip);
         scene->addItem(temp);
         scene->addItem(new Edge(temp, centerNode));
-    }
+    } */
 
 
     /*

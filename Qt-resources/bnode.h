@@ -3,23 +3,26 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 #define nullptr 0
 
 template <typename T>
 class bnode {
-    int *keys;  // An array of keys
-    int degree;      //  Minimum degree (defines the range for number of keys)
-    bnode **children; // An array of child pointers
-    int currentKeys;     //  Current number of keys
-    bool leaf; // Is true when bnode is leaf. Otherwise false
- 
-	public:
-	 
-	
-		void setKey(int pos, T k) {
-			this->keys[pos] = k;		
-		};
+
+    public:
+
+        int *keys;  // An array of keys
+        int degree;      //  Minimum degree (defines the range for number of keys)
+        bnode **children; // An array of child pointers
+        int currentKeys;     //  Current number of keys
+        bool leaf; // Is true when bnode is leaf. Otherwise false
+
+        std::string getTooltip();
+
+        void setKey(int pos, T k) {
+            this->keys[pos] = k;
+        };
 
 		T getKey(int pos) {
 			return this->keys[pos];
