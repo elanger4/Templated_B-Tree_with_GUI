@@ -67,14 +67,16 @@ GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
     std::stack<Node*> gstack;
     bnode<int> *bcurrent = tree->getRoot();
     Node *gcurrent = new Node(this, bcurrent->getTooltip());
-    Node *gparent;
+    scene->addItem(gcurrent);
+    gcurrent->setPos(0,0);
+    Node *gparent = gcurrent;
     bstack.push(bcurrent);
     gstack.push(gcurrent);
     //just make connections from current to all of currents children. 
     while(!bstack.empty()) {
         bcurrent = bstack.top();
         bstack.pop();
-        for (int i = 0; i < temp->numChildren; i++) { //numChildren doesnt exist
+        for (int i = 0; i < bcurrent->getNumChildren(); i++) { //numChildren doesnt exist
             gcurrent = new Node(this, bcurrent->getTooltip());
             scene->addItem(gcurrent);
             scene->addItem(new Edge(gcurrent, gparent));
@@ -83,15 +85,11 @@ GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
         //loop through children of temp, making gnodes and
     }
 
-
-    std::string tooltip = "Root: ";
-    for (int i = 0; i < tree->getRoot()->currentKeys; i++) {
-        tooltip += tree->getRoot()->keys[i];
-        tooltip += ", ";
-    }
+/*
     Node *centerNode = new Node(this, tooltip);
     scene->addItem(centerNode);
     centerNode->setPos(0, 0);
+    */
 
     /*
     for (auto &element : *btree) {

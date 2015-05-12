@@ -3,8 +3,17 @@
 #define nullptr 0
 
 template <typename T>
+int bnode<T>::getNumChildren() {
+    return currentKeys + 1;
+}
+
+template <typename T>
 std::string bnode<T>::getTooltip() {
-    std::string temp = "example tooltip";
+    std::string temp = "keys: ";
+    for (int i = 0; i < currentKeys; i++) {
+        temp += std::to_string(keys[i]);
+        temp += " ";
+    }
     return temp;
 }
 

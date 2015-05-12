@@ -10,14 +10,16 @@
 template <typename T>
 class bnode {
 
-    public:
-
+    private:
         int *keys;  // An array of keys
         int degree;      //  Minimum degree (defines the range for number of keys)
         bnode **children; // An array of child pointers
         int currentKeys;     //  Current number of keys
         bool leaf; // Is true when bnode is leaf. Otherwise false
 
+    public:
+
+        int getNumChildren(); 
         std::string getTooltip();
 
         void setKey(int pos, T k) {
