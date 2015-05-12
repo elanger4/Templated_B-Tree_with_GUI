@@ -1,7 +1,61 @@
 #include "btree.h"
 #include "bnode.h"
+#include <sstream>
 
+template <typename T>
+bnode<T>* btree<T>::getRoot () {
+	return this->root;
+}
 // The main function that inserts a new key in this B-Tree
+template <typename T>
+void btree<T>::readFile()
+{
+	std::ifstream file("input.txt");
+	
+	std::string line;
+	while (std::getline(file, line)) {
+		std::istringstream ss(line);
+		T value;
+		ss >> value;
+
+		insert(value);
+	}
+}
+// template <typename T>
+// std::vector<std::string> btree<T>::readFile() {
+
+//     std::ifstream fs("input.txt");
+//     std::string line;
+//     std::vector<std::string> contents;
+
+//     while (std::getline(fs, line))
+// 	{
+//         contents.push_back(line);
+// 	}
+//     return contents;
+// }
+
+template <typename T>
+void btree<T>::writeFile() {
+	std::ofstream file("input.txt");
+	file << *this;
+	// bnode<T> *nd = new bnode<T>();
+	// nd = getRoot();
+	// // myfile.open ("input.txt");
+
+    // // for (int i = 0; i < nd->getCurrentKeys(); i++) {
+        // // if (nd->getLeaf == false) {
+            // // nd->getChildren(i)->writeFile();
+	// // 	}
+	// // 	myfile << nd->getKey(i) << "\n";
+    // // }
+ 
+     // // if (nd->getLeaf == false && nd->getChildren(nd->getCurrentKeys()) != nullptr)
+         // // nd->getChildren(nd->getCurrentKeys())->writeFile();
+
+	// //   myfile.close();
+}
+
 template <typename T>
 void btree<T>::insert(T k) {
     // If tree is empty
@@ -63,15 +117,18 @@ void btree<T>::remove(T k) {
     return;
 }
 
-template <typename T>
-std::vector<int*>* btree<T>::convertToJack() {
-    std::vector<int*> *temp = new std::vector<int*>();
-    temp = root->jackTraverse(temp);
-    return temp;
-}
+// template <typename T>
+// std::vector<int*>* btree<T>::convertToJack() {
+//     std::vector<int*> *temp = new std::vector<int*>();
+//     temp = root->jackTraverse(temp);
+//     return temp;
+// }
 
-template <typename T>
-bnode<T>* btree<T>::getRoot() {
-    return root;
-}
+template <typename U>
+std::ostream &operator<<(std::ostream &stream, const btree<U> &tree) {
+	if (tree.root) {
+		tree.root->traverse(stream);
+	}
 
+	return stream;
+}
