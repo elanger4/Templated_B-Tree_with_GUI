@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdio.h>
+#include <sstream>
+//#include <stdlib.h>
 
 #define nullptr 0
 

@@ -1,5 +1,8 @@
 #include "bnode.h"
 
+#include <string>
+#include <iostream>
+
 #define nullptr 0
 
 template <typename T>
@@ -11,9 +14,14 @@ template <typename T>
 std::string bnode<T>::getTooltip() {
     std::string temp = "keys: ";
     for (int i = 0; i < currentKeys; i++) {
-        temp += std::to_string(keys[i]);
-        temp += " ";
+        std::cout << keys[i];
+        //temp += std::to_string(keys[i]);
+        std::ostringstream ss;
+        ss << keys[i];
+        temp += ss.str();
+        //temp.append((char)keys[i]);
     }
+    std::cout << temp <<std::endl;
     return temp;
 }
 
