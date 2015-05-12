@@ -14,11 +14,11 @@ template <typename T>
 std::string bnode<T>::getTooltip() {
     std::string temp = "keys: ";
     for (int i = 0; i < currentKeys; i++) {
-        std::cout << keys[i];
         //temp += std::to_string(keys[i]);
         std::ostringstream ss;
         ss << keys[i];
         temp += ss.str();
+        temp += " ";
         //temp.append((char)keys[i]);
     }
     std::cout << temp <<std::endl;

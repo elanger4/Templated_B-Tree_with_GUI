@@ -73,16 +73,23 @@ GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
     bstack.push(bcurrent);
     gstack.push(gcurrent);
     //just make connections from current to all of currents children. 
-    while(!bstack.empty()) {
+    //std::cout <<"about to enter while stack!empty" <<std::endl;
+    while(!bstack.empty() && !gstack.empty()) {
         bcurrent = bstack.top();
+        gparent = gstack.top();
         bstack.pop();
-        for (int i = 0; i < bcurrent->getNumChildren(); i++) { //numChildren doesnt exist
-            gcurrent = new Node(this, bcurrent->getTooltip());
-            scene->addItem(gcurrent);
-            scene->addItem(new Edge(gcurrent, gparent));
+        gstack.pop();
+        for (int i = 0; i < bcurrent->getNumChildren(); i++) {
+            //runs for each child
+            if (!bcurrent->getChildren(i)->getLeaf()) {
+                bnode<int> *temp = bcurrent->getChildren(i);
+                gcurrent = new Node(this, temp->getTooltip());
+                scene->addItem(gcurrent);
+                scene->addItem(new Edge(gcurrent, gparent));
+                gstack.push(gcurrent);
+                bstack.push(temp);
+            }
         }
-
-        //loop through children of temp, making gnodes and
     }
 
 /*
