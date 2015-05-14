@@ -63,6 +63,7 @@ GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
     setMinimumSize(400, 400);
     setWindowTitle(tr("B-Tree"));
 
+    /*
     std::stack<bnode<int>* > bstack;
     std::stack<Node*> gstack;
     bnode<int> *bcurrent = tree->getRoot();
@@ -92,54 +93,80 @@ GraphWidget::GraphWidget(QWidget *parent, btree<int> *tree)
         }
     }
 
-/*
-    Node *centerNode = new Node(this, tooltip);
-    scene->addItem(centerNode);
-    centerNode->setPos(0, 0);
     */
 
-    /*
-    for (auto &element : *btree) {
-        QString tooltip = "";
-        tooltip += element[0];
-        Node *temp = new Node(this, tooltip);
-        scene->addItem(temp);
-        scene->addItem(new Edge(temp, centerNode));
-    } */
 
 
-    /*
-    Node *node4 = new Node(this);
-    Node *node6 = new Node(this);
-    Node *node7 = new Node(this);
-    Node *node8 = new Node(this);
-    Node *node9 = new Node(this);
 
+
+
+
+
+   // /* 
+    Node *root = new Node(this, "15");
+    root->setPos(0, 0);
+    Node *node4 = new Node(this, "10");
+    Node *node6 = new Node(this, "20");
+    Node *node7 = new Node(this, "3 5");
+    Node *node8 = new Node(this, "13");
+    Node *node9 = new Node(this, "1 2");
+    Node *node10 = new Node(this, "4");
+    Node *node11 = new Node(this, "6 7");
+    Node *node12 = new Node(this, "11 12");
+    Node *node13 = new Node(this, "14");
+    Node *node14 = new Node(this, "18");
+    Node *node15 = new Node(this, "16 17");
+    Node *node16 = new Node(this, "19");
+    Node *node17 = new Node(this, "24");
+    Node *node18 = new Node(this, "21 22");
+    Node *node19 = new Node(this, "25 26");
+
+    scene->addItem(root);
     scene->addItem(node4);
     scene->addItem(node6);
     scene->addItem(node7);
     scene->addItem(node8);
     scene->addItem(node9);
+    scene->addItem(node10);
+    scene->addItem(node11);
+    scene->addItem(node12);
+    scene->addItem(node13);
+    scene->addItem(node14);
+    scene->addItem(node15);
+    scene->addItem(node16);
+    scene->addItem(node17);
+    scene->addItem(node18);
+    scene->addItem(node19);
 
-    scene->addItem(new Edge(node4, centerNode));
-    scene->addItem(new Edge(centerNode, node6));
-    scene->addItem(new Edge(centerNode, node8));
-    scene->addItem(new Edge(node6, node9));
-    scene->addItem(new Edge(node7, node4));
-    */
+    scene->addItem(new Edge(root, node4));
+    scene->addItem(new Edge(root, node6));
+    scene->addItem(new Edge(node4, node7));
+    scene->addItem(new Edge(node4, node8));
+    scene->addItem(new Edge(node7, node9));
+    scene->addItem(new Edge(node7, node11));
+    scene->addItem(new Edge(node7, node10));
+    scene->addItem(new Edge(node8, node12));
+    scene->addItem(new Edge(node13, node8));
+    scene->addItem(new Edge(node6, node14));
+    scene->addItem(new Edge(node14, node15));
+    scene->addItem(new Edge(node14, node16));
+    scene->addItem(new Edge(node17, node6));
+
+    scene->addItem(new Edge(node17, node18));
+    scene->addItem(new Edge(node17, node19));
+    
+  // */
 
 }
-//! [1]
 
-//! [2]
+
 void GraphWidget::itemMoved()
 {
     if (!timerId)
         timerId = startTimer(1000 / 25);
 }
-//! [2]
 
-//! [3]
+
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -169,9 +196,8 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
             QGraphicsView::keyPressEvent(event);
     }
 }
-//! [3]
 
-//! [4]
+
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
@@ -196,10 +222,10 @@ void GraphWidget::timerEvent(QTimerEvent *event)
         timerId = 0;
     }
 }
-//! [4]
+
 
 #ifndef QT_NO_WHEELEVENT
-//! [5]
+
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
     scaleView(pow((double)2, -event->delta() / 240.0));

@@ -86,6 +86,7 @@ private:
     QList<Edge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
+    bool root;
 };
 //! [0]
 

@@ -61,6 +61,10 @@ Node::Node(GraphWidget *graphWidget, std::string tooltip)
     this->setAcceptHoverEvents(true);
     QString qstr = QString::fromStdString(tooltip);
     this->setToolTip(qstr);
+    if (tooltip == "15")
+        this->root = true;
+    else
+        this->root = false;
     //
 }
 //! [0]
@@ -194,7 +198,10 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setBrush(gradient);
     */
 
-    painter->setPen(QPen(Qt::black, 0));
+    if (this->root == true)
+        painter->setPen(QPen(Qt::yellow, 0));
+    else
+        painter->setPen(QPen(Qt::black, 0));
     //painter->drawEllipse(-10, -10, 20, 20);
     painter->drawRect(-10, -10, 20, 20);
 }
